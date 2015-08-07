@@ -1,0 +1,11 @@
+c:\users\quang\documents\visual studio 2013\Projects\Randrew\Randrew\bin\Debug\Randrew.exe.config
+C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.csprojResolveAssemblyReference.cache
+C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.MainGUI.resources
+C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.Properties.Resources.resources
+C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.csproj.GenerateResource.Cache
+C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\bin\Debug\Randrew.exe
+C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\bin\Debug\Randrew.pdb
+C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\bin\Debug\LumenWorks.Framework.IO.xml
+C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.exe
+C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.pdb
