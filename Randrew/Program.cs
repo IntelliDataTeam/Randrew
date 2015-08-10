@@ -10,6 +10,13 @@ namespace Randrew
 {
     static class Program
     {
+        enum Err
+        {
+            Good,
+            Duplicates,
+            Errors,
+            Missings
+        }
         private static CsvReader csv;
         private static string[] headers;
         /// <summary>
@@ -66,11 +73,16 @@ namespace Randrew
             return true;
         }
 
-        public static bool chkDup()
+        public static int DataChk()
         {
             int pn = csv.GetFieldIndex("PN");
+            if (pn == -1)
+            {
+
+            }
             List<HashSet<string>> hashList = new List<HashSet<string>>();
             HashSet<string> hashItem = new HashSet<string>();
+            string[] temp = new string[csv.FieldCount];
             hashList.Add(hashItem);
             while (csv.ReadNextRecord())
             {
@@ -83,7 +95,15 @@ namespace Randrew
                     else
                     {
                         Console.Write(csv.CurrentRecordIndex + ": " + csv[0]);
-                        return true;
+                        Console.WriteLine();
+                        return (int)Err.Duplicates;
+                    }
+                    csv.CopyCurrentRecordTo(temp);
+                    if (string.Join(",",temp).Contains('#'))
+                    {
+                        Console.Write(csv.CurrentRecordIndex + ": " + csv[0]);
+                        Console.WriteLine();
+                        return (int)Err.Errors;
                     }
                 }
                 catch (OutOfMemoryException ex)
@@ -94,7 +114,7 @@ namespace Randrew
 
             }
 
-            return false;
+            return (int)Err.Good;
         }
     }
 }
