@@ -1,5 +1,17 @@
-# (Intelli)Data Checker
-Data Checking Made Simple
+# Randrew 1.0
+Replacing Humans, one at a time.
+
+<h2>Updates</h2>
+<h3>08/07/2015</h3>
+-The project will now known as Randrew
+-Switched over to a new framework for reading csv
+-Added bonus personality
+-Improved performance of checks
+
+<h2>Current Goals</h2>
+-Output relevant data to datagridview
+-Run queries
+-Read from a "rule" file.
 
 <h2>Purpose</h2>
 The purpose of this program is to assist in the build checking process. The end goal of this project is to use this 
