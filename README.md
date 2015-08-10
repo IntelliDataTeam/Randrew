@@ -12,6 +12,8 @@ Replacing Humans, one at a time.
 -Output relevant data to datagridview <br/>
 -Run queries <br/>
 -Read from a "rule" file. <br/>
+	-Distinct column file
+	-Relevant column for family file
 -Encrypt Password <br/>
 
 <h2>Purpose</h2>
