@@ -12,6 +12,7 @@ Replacing Humans, one at a time.
 -Output relevant data to datagridview <br/>
 -Run queries <br/>
 -Read from a "rule" file. <br/>
+-Encrypt Password <br/>
 
 <h2>Purpose</h2>
 The purpose of this program is to assist in the build checking process. The end goal of this project is to use this 
