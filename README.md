@@ -3,15 +3,15 @@ Replacing Humans, one at a time.
 
 <h2>Updates</h2>
 <h3>08/07/2015</h3>
--The project will now known as Randrew
--Switched over to a new framework for reading csv
--Added bonus personality
--Improved performance of checks
+-The project will now known as Randrew <br/>
+-Switched over to a new framework for reading csv <br/>
+-Added bonus personality <br/>
+-Improved performance of checks <br/>
 
 <h2>Current Goals</h2>
--Output relevant data to datagridview
--Run queries
--Read from a "rule" file.
+-Output relevant data to datagridview <br/>
+-Run queries <br/>
+-Read from a "rule" file. <br/>
 
 <h2>Purpose</h2>
 The purpose of this program is to assist in the build checking process. The end goal of this project is to use this 
