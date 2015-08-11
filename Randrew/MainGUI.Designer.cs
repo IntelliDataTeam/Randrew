@@ -42,6 +42,7 @@
             this.menuFile.Items.AddRange(new object[] {
             "Import CSV",
             "Check CSV",
+            "Update Source",
             "Exit"});
             this.menuFile.Location = new System.Drawing.Point(12, 12);
             this.menuFile.Name = "menuFile";
@@ -68,8 +69,7 @@
             // 
             this.dataOutput.AllowUserToAddRows = false;
             this.dataOutput.AllowUserToDeleteRows = false;
-            this.dataOutput.AllowUserToResizeColumns = false;
-            this.dataOutput.AllowUserToResizeRows = false;
+            this.dataOutput.AllowUserToOrderColumns = true;
             this.dataOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataOutput.Location = new System.Drawing.Point(12, 116);
             this.dataOutput.Name = "dataOutput";

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LumenWorks.Framework.IO.Csv;
+using System.Security.Cryptography;
 
 namespace Randrew
 {
@@ -17,6 +18,7 @@ namespace Randrew
         {
             Import,
             Check,
+            Update,
             Exit
         }
         private bool oFile = false;
@@ -27,10 +29,11 @@ namespace Randrew
             Bunny.Text = Secrets.bunnyEmotion();
         }
         
-        private void setDGV(string[] csv)
+        private void setDGV(DataTable output)
         {
             dataOutput.AutoGenerateColumns = true;
-            dataOutput.DataSource = csv;
+            dataOutput.DataSource = output;
+
         }
 
         private void MainGUI_Load(object sender, EventArgs e)
@@ -68,9 +71,14 @@ namespace Randrew
                                 break;
                             case 1:
                                 statusText.Text = "There are duplicates.";
+                                setDGV(Program.getOutput());
                                 break;
                             case 2:
                                 statusText.Text = "There are error values.";
+                                setDGV(Program.getOutput());
+                                break;
+                            case 4:
+                                statusText.Text = "There is no PN Column.";
                                 break;
                         }
                     }
@@ -78,6 +86,15 @@ namespace Randrew
                     {
                         MessageBox.Show("Please import a file first.", "Error", MessageBoxButtons.OK);
                     }
+                    break;
+                case (int)comboIndex.Update:
+                    /*while (!Program.checkCredential())
+                    {
+                        statusText.Text = "Wrong Username/Password combination. Please try again.";
+                        Program.setCredential();
+                    }
+                    statusText.Text = "Successfully connected to the database.";*/
+                    setDGV(Program.parsedFile());
                     break;
                 default:
                     break;
@@ -88,5 +105,6 @@ namespace Randrew
         {
 
         }
+
     }
 }

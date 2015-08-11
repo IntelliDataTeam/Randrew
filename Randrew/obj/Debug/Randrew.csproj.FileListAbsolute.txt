@@ -9,3 +9,9 @@ C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\bin\Debug\L
 C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\bin\Debug\LumenWorks.Framework.IO.xml
 C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.exe
 C:\Users\Quang\Documents\Visual Studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.pdb
+C:\Users\Quang\documents\visual studio 2013\Projects\Randrew\Randrew\bin\Debug\MySql.Data.dll
+C:\Users\Quang\documents\visual studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.PassForm.resources
+C:\Users\Quang\documents\visual studio 2013\Projects\Randrew\Randrew\bin\Debug\Randrew.exe.manifest
+C:\Users\Quang\documents\visual studio 2013\Projects\Randrew\Randrew\bin\Debug\Randrew.application
+C:\Users\Quang\documents\visual studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.exe.manifest
+C:\Users\Quang\documents\visual studio 2013\Projects\Randrew\Randrew\obj\Debug\Randrew.application
