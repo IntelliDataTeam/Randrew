@@ -15,6 +15,7 @@ Replacing Humans, one at a time.
 ---Distinct column file <br/>
 ---Relevant column for family file <br/>
 -Encrypt Password <br/>
+-Progress Bar <br/>
 
 <h2>Purpose</h2>
 The purpose of this program is to assist in the build checking process. The end goal of this project is to use this 
