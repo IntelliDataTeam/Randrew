@@ -2,6 +2,9 @@
 Replacing Humans, one at a time.
 
 <h2>Updates</h2>
+<h3>08/17/2015</h3>
+-Capable of reading and parsing config file for family columns.
+-Able to show data from config file in datagridview.
 <h3>08/07/2015</h3>
 -The project will now known as Randrew <br/>
 -Switched over to a new framework for reading csv <br/>
@@ -13,9 +16,11 @@ Replacing Humans, one at a time.
 -Run queries <br/>
 -Read from a "rule" file. <br/>
 ---Distinct column file <br/>
----Relevant column for family file <br/>
 -Encrypt Password <br/>
 -Progress Bar <br/>
+---Might not be possible since we can't get the line count without greatly affecting performance.<br/>
+---Alternative is to have an animation that indicate the process is currently running.<br/>
+---Need to get backgroundworker to actively redefining 'Bunny' text field.
 
 <h2>Purpose</h2>
 The purpose of this program is to assist in the build checking process. The end goal of this project is to use this 
