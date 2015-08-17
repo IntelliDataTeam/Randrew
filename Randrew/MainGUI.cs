@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using LumenWorks.Framework.IO.Csv;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace Randrew
 {
@@ -22,6 +23,7 @@ namespace Randrew
             Exit
         }
         private bool oFile = false;
+        //BackgroundWorker Minion = new BackgroundWorker();
 
         public MainGUI()
         {
@@ -64,21 +66,32 @@ namespace Randrew
                 case (int)comboIndex.Check:
                     if (oFile)
                     {
+                        /*Minion.DoWork += new DoWorkEventHandler(Minion_DoWork);
+                        Minion.ProgressChanged += new ProgressChangedEventHandler(Minion_ProgressChanged);
+                        Minion.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Minion_RunWorkerCompleted);
+                        Minion.WorkerReportsProgress = true;
+                        Minion.RunWorkerAsync();*/
+
+                        menuFile.Enabled = false;
                         switch (Program.DataChk())
                         {
                             case 0:
                                 statusText.Text = "All is good.";
+                                menuFile.Enabled = true;
                                 break;
                             case 1:
                                 statusText.Text = "There are duplicates.";
                                 setDGV(Program.getOutput());
+                                menuFile.Enabled = true;
                                 break;
                             case 2:
                                 statusText.Text = "There are error values.";
                                 setDGV(Program.getOutput());
+                                menuFile.Enabled = true;
                                 break;
                             case 4:
                                 statusText.Text = "There is no PN Column.";
+                                menuFile.Enabled = true;
                                 break;
                         }
                     }
@@ -99,6 +112,22 @@ namespace Randrew
                 default:
                     break;
             }
+        }
+
+        private void Minion_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Thread.Sleep(100);
+        }
+
+        private void Minion_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Random random = new Random();
+            int ranGen = random.Next(0, 3);
+            Bunny.Text = Secrets.bunnyEmotion(ranGen + 12);
+        }
+
+        private void Minion_ProgressChanged(object sender, ProgressChangedEventArgs e) {
+
         }
 
         private void statusText_TextChanged(object sender, EventArgs e)

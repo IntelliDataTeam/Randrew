@@ -12,8 +12,23 @@ namespace Randrew
         {
             Random random = new Random();
             int ranGen = random.Next(0, 12);
+            //int ranGen = 8;
+            string[] emo = storage(ranGen);
+            
+            return string.Join(Environment.NewLine, emo);
+        }
+
+        public static string bunnyEmotion(int x)
+        {
+            string[] emo = storage(x);
+
+            return string.Join(Environment.NewLine, emo);
+        }
+
+        public static string[] storage(int x)
+        {
             string[] emo = new string[4];
-            switch (ranGen)
+            switch (x)
             {
                 case 0:
                     emo[0] = "(" + '\\' + ' ' + ' ' + '/' + ')';
@@ -66,7 +81,7 @@ namespace Randrew
                 case 8:
                     emo[0] = "(\\_/)";
                     emo[1] = "(^_^)";
-                    emo[2] = "(___)O";
+                    emo[2] = "  (___)O";
                     break;
 
                 case 9:
@@ -90,10 +105,31 @@ namespace Randrew
                     emo[3] = "/_|_\\";
                     break;
 
+                case 12:
+                    emo[0] = "(" + '\\' + ' ' + ' ' + '/' + ')';
+                    emo[1] = "( .  .)";
+                    emo[2] = ">[Working.]<";
+                    emo[3] = "C(\") (\")";
+                    break;
+
+                case 13:
+                    emo[0] = "(" + '\\' + ' ' + ' ' + '/' + ')';
+                    emo[1] = "( .  .)";
+                    emo[2] = ">[Working..]<";
+                    emo[3] = "C(\") (\")";
+                    break;
+
+                case 14:
+                    emo[0] = "(" + '\\' + ' ' + ' ' + '/' + ')';
+                    emo[1] = "( .  .)";
+                    emo[2] = ">[Working...]<";
+                    emo[3] = "C(\") (\")";
+                    break;
+
                 default:
                     break;
             }
-            return string.Join(Environment.NewLine, emo);
+            return emo;
         }
     }
 }

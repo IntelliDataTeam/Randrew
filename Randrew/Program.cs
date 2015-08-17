@@ -27,6 +27,8 @@ namespace Randrew
         private static DataTable output = new DataTable();
         private static string username;
         private static string password;
+        private static List<string[]> d_columns = new List<string[]>();
+        private static List<string> d_headers = new List<string>();
         /** </Global Variables> **/
 
         /// <summary>
@@ -48,12 +50,12 @@ namespace Randrew
                 if (headers[x] != "PN")
                     distincts.Add(headers[x]);
             }
-              
         }
 
+        /* Is currently working, but still need to cut down on overheads. */
         public static DataTable parsedFile()
         {
-            string filename = "\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randrew\\Configs\\columns.txt";
+            string filename = "\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randru\\Configs\\columns.txt";
             DataTable req = new DataTable("Requirements");
             List<string[]> rList = new List<string[]>();
             int rLen = 0;
@@ -64,16 +66,14 @@ namespace Randrew
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        /*req.Columns.Add(line.Substring(0, line.IndexOf(':')));
-                        string[] row = line.Substring(line.IndexOf(':') + 1).Split(',');
-                        for (int x = 0; x < rows.Length; x++)
-                            req.Rows.Add(rows[x]);*/
-                        string cHeader = line.Substring(0, line.IndexOf(':')); 
+                        string cHeader = line.Substring(0, line.IndexOf(':'));
+                        d_headers.Add(cHeader);
                         req.Columns.Add(cHeader, typeof(string));
                         string[] row = line.Substring(line.IndexOf(':') + 1).Split(',');
                         if (row.Length > rLen)
                             rLen = row.Length;
                         rList.Add(row);
+                        d_columns.Add(row);
                     }
                     string[] rArr = new string[req.Columns.Count];
                     for (int y = 0; y < rLen; y++)
@@ -95,7 +95,7 @@ namespace Randrew
                 }
             }
             catch (Exception e) {
-                Console.WriteLine("Error: " + e.Message);
+                MessageBox.Show("Error: " + e.Message,"Error",MessageBoxButtons.OK);
             }
             return req;
         }
@@ -179,9 +179,16 @@ namespace Randrew
             try
             {
                 conn = new MySqlConnection(cs);
-                /*MySqlCommand command = conn.CreateCommand();
+                /*
+                MySqlCommand command = conn.CreateCommand();
                 MySqlDataReader reader;
-                command.CommandText = "SELECT DISTINCT "*/
+                for (int x = 0; x < d_headers.Count(); x++) {
+                    for (int y = 0; y < d_columns.Count(); y++)
+                    {
+                        command.CommandText = "SELECT DISTINCT " + d_columns[y] + "FROM capacitors WHERE prodcat='" + d_headers[x] + "';";
+                    }
+                }
+                */
                 conn.Open();
             }
             catch (MySqlException ex)
@@ -208,10 +215,13 @@ namespace Randrew
             HashSet<string> hashItem = new HashSet<string>();
             string[] temp = new string[csv.FieldCount];
             hashList.Add(hashItem);
+            /**** Find how to get the max size of the csv file */
+
             while (csv.ReadNextRecord())
             {
                 try
                 {
+                    current += 1;
                     // Check for duplicates in column "PN"
                     if (hashList.TrueForAll(hSet => !hSet.Contains(csv[pn])))
                     {
@@ -245,5 +255,6 @@ namespace Randrew
 
             return (int)Err.Good;
         }
+
     }
 }
