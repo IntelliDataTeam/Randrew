@@ -3,8 +3,8 @@ Replacing Humans, one at a time.
 
 <h2>Updates</h2>
 <h3>08/17/2015</h3>
--Capable of reading and parsing config file for family columns.
--Able to show data from config file in datagridview.
+-Capable of reading and parsing config file for family columns.<br/>
+-Able to show data from config file in datagridview.<br/>
 <h3>08/07/2015</h3>
 -The project will now known as Randrew <br/>
 -Switched over to a new framework for reading csv <br/>
