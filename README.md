@@ -22,6 +22,11 @@ Replacing Humans, one at a time.
 ---Alternative is to have an animation that indicate the process is currently running.<br/>
 ---Need to get backgroundworker to actively redefining 'Bunny' text field.
 
+<h2>Current Problems</h2>
+-How to structure the distinct results file:<br/>
+---Store each query one after another in one csv file?<br/>
+---Or store each individual family in its own file?<br/>
+
 <h2>Purpose</h2>
 The purpose of this program is to assist in the build checking process. The end goal of this project is to use this 
 program to eliminate inconsistencies and simple mistakes from the data building process. Accurate and consistence 		data are important for IntelliData since our database is the the important asset that we have. Also, having good 		data cut down on the amount of spring cleanings that we have to do along with cutting down the amount of work 		that the data team have to do.
