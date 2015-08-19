@@ -55,7 +55,7 @@ namespace Randrew
         /* Is currently working, but still need to cut down on overheads. */
         public static DataTable parsedFile()
         {
-            string filename = "\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randru\\Configs\\columns.txt";
+            string filename = "\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randru\\Configs\\columns_test.txt";
             DataTable req = new DataTable("Requirements");
             List<string[]> rList = new List<string[]>();
             int rLen = 0;
@@ -85,7 +85,7 @@ namespace Randrew
                                 string[] tmp = rList[x];
                                 rArr[x] = tmp[y];
                             }
-                            catch (IndexOutOfRangeException ex)
+                            catch (IndexOutOfRangeException ex) // Currently throw a harmless 'IndexOutOfRangeException' in the console.
                             {
                                 rArr[x] = "";
                             }
@@ -151,9 +151,11 @@ namespace Randrew
             return output;
         }
 
-        public static void setCredential()
+        public static bool setCredential(bool err)
         {
             PassForm pf = new PassForm();
+            if (err)
+                pf.Show_Info();
             pf.ShowDialog();
             if (pf.DialogResult == DialogResult.OK)
             {
@@ -161,45 +163,57 @@ namespace Randrew
                 credential = pf.getCredential();
                 username = credential[0];
                 password = credential[1];
+                return true;
             }
+            return false;
         }
 
-        public static bool checkCredential()
+        public static bool UpdateSource()
         {
-            if (username == null || password == null || !updateSource())
-                return false;
-            return true;
-        }
-
-        public static bool updateSource()
-        {
-            string cs = @"server=10.176.3.13;userid=" + username + ";password=" + password + ";database=dev";
+            string cs = @"server=localhost;userid=" + username + ";password=" + password + ";database=test";
             MySqlConnection conn = null;
+            MySqlDataReader reader = null;
+            MySqlCommand cmd = null;
 
             try
             {
                 conn = new MySqlConnection(cs);
-                /*
-                MySqlCommand command = conn.CreateCommand();
-                MySqlDataReader reader;
-                for (int x = 0; x < d_headers.Count(); x++) {
-                    for (int y = 0; y < d_columns.Count(); y++)
-                    {
-                        command.CommandText = "SELECT DISTINCT " + d_columns[y] + "FROM capacitors WHERE prodcat='" + d_headers[x] + "';";
-                    }
-                }
-                */
                 conn.Open();
+
+                for (int x = 0; x < d_headers.Count(); x++)
+                {
+                    string[] disCol = d_columns[x];
+                    object[] oString = new object[disCol.Length];
+                    string qString = string.Join(",", disCol);
+
+                    string stm = "SELECT DISTINCT " + qString + " FROM cdb WHERE Family='" + d_headers[x] + "';";
+                    Console.WriteLine(stm);
+                    cmd = new MySqlCommand(stm, conn);
+                    reader = cmd.ExecuteReader();
+                    using (StreamWriter w = new StreamWriter("\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randru\\Configs\\" + d_headers[x] + ".csv", false))
+                    {
+                        while (reader.Read())
+                        {
+                            reader.GetValues(oString);
+                            w.WriteLine(string.Join(",", oString));
+                        }
+                    }
+                    reader.Close();
+                }
             }
             catch (MySqlException ex)
             {
-                return false;
-            }
-            finally
-            {
+                Console.WriteLine("Error: {0}", ex.ToString());
+                if (reader != null)
+                    reader.Close();
                 if (conn != null)
                     conn.Close();
+                return false;
             }
+            if (reader != null)
+                reader.Close();
+            if (conn != null)
+                conn.Close();
             return true;
         }
 
@@ -221,7 +235,6 @@ namespace Randrew
             {
                 try
                 {
-                    current += 1;
                     // Check for duplicates in column "PN"
                     if (hashList.TrueForAll(hSet => !hSet.Contains(csv[pn])))
                     {

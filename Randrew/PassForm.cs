@@ -30,6 +30,11 @@ namespace Randrew
             pass = password.Text;
         }
 
+        public void Show_Info()
+        {
+            info.Show();
+        }
+
         public string[] getCredential()
         {
             string[] credential = new string[2];

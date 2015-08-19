@@ -23,7 +23,7 @@ namespace Randrew
             Exit
         }
         private bool oFile = false;
-        //BackgroundWorker Minion = new BackgroundWorker();
+        //BackgroundWorker Minion;
 
         public MainGUI()
         {
@@ -40,7 +40,12 @@ namespace Randrew
 
         private void MainGUI_Load(object sender, EventArgs e)
         {
-
+            /*Minion = new BackgroundWorker();
+            Minion.WorkerReportsProgress = true;
+            Minion.WorkerSupportsCancellation = true;
+            Minion.DoWork += new DoWorkEventHandler(Minion_DoWork);
+            Minion.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Minion_RunWorkerCompleted);*/
+            
         }
 
         private void menuFile_SelectedIndexChanged(object sender, EventArgs e)
@@ -66,12 +71,12 @@ namespace Randrew
                 case (int)comboIndex.Check:
                     if (oFile)
                     {
-                        /*Minion.DoWork += new DoWorkEventHandler(Minion_DoWork);
-                        Minion.ProgressChanged += new ProgressChangedEventHandler(Minion_ProgressChanged);
-                        Minion.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Minion_RunWorkerCompleted);
-                        Minion.WorkerReportsProgress = true;
-                        Minion.RunWorkerAsync();*/
-
+                        /*if (!Minion.IsBusy)
+                        {
+                            Minion.RunWorkerAsync(Secrets.bunnyEmotion());
+                            menuFile.Enabled = false;
+                            statusText.Text = "Working...";
+                        }*/
                         menuFile.Enabled = false;
                         switch (Program.DataChk())
                         {
@@ -101,13 +106,18 @@ namespace Randrew
                     }
                     break;
                 case (int)comboIndex.Update:
-                    /*while (!Program.checkCredential())
-                    {
-                        statusText.Text = "Wrong Username/Password combination. Please try again.";
-                        Program.setCredential();
-                    }
-                    statusText.Text = "Successfully connected to the database.";*/
                     setDGV(Program.parsedFile());
+                    bool submit = false;
+                    submit = Program.setCredential(false);
+                    while (!Program.UpdateSource() && submit)
+                    {
+                        statusText.Text = "Incorrect Username/Password. Try Again.";
+                        submit = Program.setCredential(true);
+                    }
+                    if (submit)
+                        statusText.Text = "Successfully connected to the database and Updated the Source Files.";
+                    else
+                        statusText.Text = "Update Source Files Cancelled.";
                     break;
                 default:
                     break;
@@ -116,14 +126,24 @@ namespace Randrew
 
         private void Minion_DoWork(object sender, DoWorkEventArgs e)
         {
-            Thread.Sleep(100);
+            BackgroundWorker minion = sender as BackgroundWorker;
+            Thread.Sleep(1000);
         }
 
         private void Minion_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Random random = new Random();
-            int ranGen = random.Next(0, 3);
-            Bunny.Text = Secrets.bunnyEmotion(ranGen + 12);
+            if (e.Cancelled == true)
+            {
+                statusText.Text = "Process was cancelled.";
+            }
+            else if (!(e.Error == null))
+            {
+                statusText.Text = "Error: " + e.Error.Message;
+            }
+            else
+            {
+                statusText.Text = "success!";
+            }
         }
 
         private void Minion_ProgressChanged(object sender, ProgressChangedEventArgs e) {

@@ -33,6 +33,7 @@
             this.username = new System.Windows.Forms.TextBox();
             this.password = new System.Windows.Forms.TextBox();
             this.submit = new System.Windows.Forms.Button();
+            this.info = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // u_label
@@ -80,11 +81,23 @@
             this.submit.UseVisualStyleBackColor = true;
             this.submit.Click += new System.EventHandler(this.submit_Click);
             // 
+            // info
+            // 
+            this.info.AutoSize = true;
+            this.info.ForeColor = System.Drawing.Color.Red;
+            this.info.Location = new System.Drawing.Point(102, 9);
+            this.info.Name = "info";
+            this.info.Size = new System.Drawing.Size(144, 13);
+            this.info.TabIndex = 5;
+            this.info.Text = "Wrong Username/Password.";
+            this.info.Visible = false;
+            // 
             // PassForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(272, 150);
+            this.Controls.Add(this.info);
             this.Controls.Add(this.submit);
             this.Controls.Add(this.password);
             this.Controls.Add(this.username);
@@ -104,5 +117,6 @@
         private System.Windows.Forms.TextBox username;
         private System.Windows.Forms.TextBox password;
         private System.Windows.Forms.Button submit;
+        private System.Windows.Forms.Label info;
     }
 }
