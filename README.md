@@ -13,20 +13,18 @@ Replacing Humans, one at a time.
 
 <h2>Current Goals</h2>
 -Output relevant data to datagridview <br/>
--Run queries <br/>
 -Read from a "rule" file. <br/>
 ---Distinct column file <br/>
 -Encrypt Password <br/>
 -Progress Bar <br/>
 ---Might not be possible since we can't get the line count without greatly affecting performance.<br/>
 ---Alternative is to have an animation that indicate the process is currently running.<br/>
----Need to get backgroundworker to actively redefining 'Bunny' text field.
+---Need to get backgroundworker to actively redefining 'Bunny' text field. <br/>
+-Properly check username and password before running queries <br/>
 
 <h2>Current Problems</h2>
--How to structure the distinct results file:<br/>
----Store each query one after another in one csv file?<br/>
----Or store each individual family in its own file?<br/>
--There are 'IndexOutOfRangeException's being thrown when user is inputing in credential for 'Updating Source'<br/>
+-Username and Password data are unencrypted <br/>
+-Input form are susceptible to sql injection attack <br/>
 
 <h2>Purpose</h2>
 The purpose of this program is to assist in the build checking process. The end goal of this project is to use this 
