@@ -19,7 +19,8 @@ namespace Randrew
             Duplicates,
             Errors,
             Missings,
-            PNless
+            PNless,
+            NewValues
         }
         private static CsvReader csv;
         private static string[] headers;
@@ -29,6 +30,9 @@ namespace Randrew
         private static string password;
         private static List<string[]> d_columns = new List<string[]>();
         private static List<string> d_headers = new List<string>();
+        private static List<string[]> uniques = new List<string[]>();
+        private static List<string> families = new List<string>();
+        private static DataTable req = new DataTable();
         /** </Global Variables> **/
 
         /// <summary>
@@ -39,6 +43,10 @@ namespace Randrew
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            parsedFile();
+            LoadData("CCA");
+
             Application.Run(new MainGUI());
         }
 
@@ -53,10 +61,11 @@ namespace Randrew
         }
 
         /* Is currently working, but still need to cut down on overheads. */
-        public static DataTable parsedFile()
+        public static void parsedFile()
         {
             string filename = "\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randru\\Configs\\columns_test.txt";
-            DataTable req = new DataTable("Requirements");
+
+            //DataTable req = new DataTable("Requirements");
             List<string[]> rList = new List<string[]>();
             int rLen = 0;
             Console.WriteLine(filename);
@@ -96,7 +105,12 @@ namespace Randrew
             }
             catch (Exception e) {
                 MessageBox.Show("Error: " + e.Message,"Error",MessageBoxButtons.OK);
+                Environment.Exit(0);
             }
+        }
+
+        public static DataTable getReq()
+        {
             return req;
         }
 
@@ -168,6 +182,23 @@ namespace Randrew
             return false;
         }
 
+        public static void LoadData(string family) {
+            // Current plan is for this to only keep in memory only one family at a time and replace it if a new family appeared.
+            string filename = @"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\" + family + ".csv";
+            // Can do a File.Exists as part of the data checking process (There shouldn't be any new family).
+            using (StreamReader sr = new StreamReader(filename))
+            {
+                Console.WriteLine(d_headers[1]);
+                string[] arr = new string[d_headers.IndexOf(family)];
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    arr = line.Split(',');
+                    uniques.Add(arr);
+                }
+            }
+        }
+
         public static bool UpdateSource()
         {
             string cs = @"server=localhost;userid=" + username + ";password=" + password + ";database=test";
@@ -190,7 +221,7 @@ namespace Randrew
                     Console.WriteLine(stm);
                     cmd = new MySqlCommand(stm, conn);
                     reader = cmd.ExecuteReader();
-                    using (StreamWriter w = new StreamWriter("\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randru\\Configs\\" + d_headers[x] + ".csv", false))
+                    using (StreamWriter w = new StreamWriter(@"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\" + d_headers[x] + ".csv", false))
                     {
                         while (reader.Read())
                         {
@@ -255,6 +286,27 @@ namespace Randrew
                         Console.Write(csv.CurrentRecordIndex + ": " + csv[pn]);
                         Console.WriteLine();
                         return (int)Err.Errors;
+                    }
+
+                    // !Currently is not able to check for unique value. Need to be fix.
+                    for (int x = 0; x < csv.FieldCount; x++)
+                    {
+                        if (d_headers.Contains(headers[x]))
+                        {
+                            bool nVal = false;
+                            int col = d_headers.IndexOf(headers[x]);
+                            for (int y = 0; y < d_columns.Count(); y++)
+                            {
+                                string[] arr = d_columns[y];
+                                if (csv[x] == arr[col])
+                                {
+                                    nVal = true;
+                                    break;
+                                }
+                            }
+                            if (!nVal)
+                                return (int)Err.NewValues;
+                        }
                     }
                 }
                 // If hashset is out of memory, store it in the list and create a new one

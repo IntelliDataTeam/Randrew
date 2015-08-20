@@ -82,23 +82,23 @@ namespace Randrew
                         {
                             case 0:
                                 statusText.Text = "All is good.";
-                                menuFile.Enabled = true;
                                 break;
                             case 1:
                                 statusText.Text = "There are duplicates.";
                                 setDGV(Program.getOutput());
-                                menuFile.Enabled = true;
                                 break;
                             case 2:
                                 statusText.Text = "There are error values.";
                                 setDGV(Program.getOutput());
-                                menuFile.Enabled = true;
                                 break;
                             case 4:
                                 statusText.Text = "There is no PN Column.";
-                                menuFile.Enabled = true;
+                                break;
+                            case 5:
+                                statusText.Text = "There are new values.";
                                 break;
                         }
+                        menuFile.Enabled = true;
                     }
                     else
                     {
@@ -106,7 +106,7 @@ namespace Randrew
                     }
                     break;
                 case (int)comboIndex.Update:
-                    setDGV(Program.parsedFile());
+                    setDGV(Program.getReq());
                     bool submit = false;
                     submit = Program.setCredential(false);
                     while (!Program.UpdateSource() && submit)
@@ -118,6 +118,9 @@ namespace Randrew
                         statusText.Text = "Successfully connected to the database and Updated the Source Files.";
                     else
                         statusText.Text = "Update Source Files Cancelled.";
+                    break;
+                case (int)comboIndex.Exit:
+                    Environment.Exit(0);
                     break;
                 default:
                     break;
