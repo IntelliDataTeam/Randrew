@@ -64,7 +64,6 @@ namespace Randrew
         public static void parsedFile()
         {
             string filename = "\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randru\\Configs\\columns_test.txt";
-
             //DataTable req = new DataTable("Requirements");
             List<string[]> rList = new List<string[]>();
             int rLen = 0;
@@ -188,8 +187,14 @@ namespace Randrew
             // Can do a File.Exists as part of the data checking process (There shouldn't be any new family).
             using (StreamReader sr = new StreamReader(filename))
             {
-                Console.WriteLine(d_headers[1]);
-                string[] arr = new string[d_headers.IndexOf(family)];
+                //Console.WriteLine(d_headers[1]);
+                int i = d_headers.IndexOf(family);
+                string[] arr = new string[i];
+                string[] temp = d_columns[i];
+                for (int x = 0; x < temp.Length; x++)
+                {
+                    families.Add(temp[x]);
+                }
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
@@ -201,7 +206,8 @@ namespace Randrew
 
         public static bool UpdateSource()
         {
-            string cs = @"server=localhost;userid=" + username + ";password=" + password + ";database=test";
+            //string cs = @"server=localhost;userid=" + username + ";password=" + password + ";database=test";
+            string cs = @"server=10.176.3.13;userid=" + username + ";password=" + password + ";database=dev";
             MySqlConnection conn = null;
             MySqlDataReader reader = null;
             MySqlCommand cmd = null;
@@ -217,9 +223,11 @@ namespace Randrew
                     object[] oString = new object[disCol.Length];
                     string qString = string.Join(",", disCol);
 
-                    string stm = "SELECT DISTINCT " + qString + " FROM cdb WHERE Family='" + d_headers[x] + "';";
+                    //string stm = "SELECT DISTINCT " + qString + " FROM cdb WHERE Family='" + d_headers[x] + "';";
+                    string stm = "SELECT DISTINCT " + qString + " FROM capacitors WHERE prodcat='" + d_headers[x] + "';";
                     Console.WriteLine(stm);
                     cmd = new MySqlCommand(stm, conn);
+                    
                     reader = cmd.ExecuteReader();
                     using (StreamWriter w = new StreamWriter(@"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\" + d_headers[x] + ".csv", false))
                     {
@@ -291,21 +299,25 @@ namespace Randrew
                     // !Currently is not able to check for unique value. Need to be fix.
                     for (int x = 0; x < csv.FieldCount; x++)
                     {
-                        if (d_headers.Contains(headers[x]))
+                        if (families.Contains(headers[x]))
                         {
                             bool nVal = false;
-                            int col = d_headers.IndexOf(headers[x]);
-                            for (int y = 0; y < d_columns.Count(); y++)
+                            int col = families.IndexOf(headers[x]);
+                            for (int y = 0; y < uniques.Count(); y++)
                             {
-                                string[] arr = d_columns[y];
+                                string[] arr = uniques[y];
                                 if (csv[x] == arr[col])
                                 {
+                                    
                                     nVal = true;
                                     break;
                                 }
                             }
                             if (!nVal)
+                            {
+                                Console.Write("New value for " + headers[x] + " for " + csv.CurrentRecordIndex + ": " + csv[pn]);
                                 return (int)Err.NewValues;
+                            }
                         }
                     }
                 }

@@ -127,6 +127,16 @@ namespace Randrew
             }
         }
 
+        public void Waiting()
+        {
+            Bunny.Text = Secrets.bunnyEmotion(12);
+        }
+
+        public void Resuming()
+        {
+            Bunny.Text = Secrets.bunnyEmotion();
+        }
+
         private void Minion_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker minion = sender as BackgroundWorker;
