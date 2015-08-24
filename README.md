@@ -24,6 +24,8 @@ Replacing Humans, one at a time.
 -Implement threading to update GUI while processes are running <br/>
 
 <h2>Current Problems</h2>
+<b>-Unique Data Checking is costing too much performance</b> <br/>
+---Need to optimize the code (right now is 10x slower with it) <br/>
 -Username and Password data are unencrypted <br/>
 -Input form are susceptible to sql injection attack <br/>
 -Threading is not working/implemented <br/>
