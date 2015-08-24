@@ -27,6 +27,8 @@ Replacing Humans, one at a time.
 -Username and Password data are unencrypted <br/>
 -Input form are susceptible to sql injection attack <br/>
 -Threading is not working/implemented <br/>
+-Unable to update/edit UI during processing <br/>
+---Need to move UI and internal processing to different threads <br/>
 
 <h2>Purpose</h2>
 The purpose of this program is to assist in the build checking process. The end goal of this project is to use this 
