@@ -33,6 +33,7 @@ namespace Randrew
         private static List<string[]> uniques = new List<string[]>();
         private static List<string> families = new List<string>();
         private static DataTable req = new DataTable();
+        private static bool[] errors = {false,false,false,false,false,false};
         /** </Global Variables> **/
 
         /// <summary>
@@ -231,6 +232,7 @@ namespace Randrew
                     reader = cmd.ExecuteReader();
                     using (StreamWriter w = new StreamWriter(@"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\" + d_headers[x] + ".csv", false))
                     {
+                        w.WriteLine(string.Join(",", disCol));
                         while (reader.Read())
                         {
                             reader.GetValues(oString);
@@ -257,12 +259,13 @@ namespace Randrew
         }
 
         // Run checks while reading the csv file once.
-        public static int DataChk()
+        public static bool[] DataChk()
         {
             int pn = csv.GetFieldIndex("PN");
             if (pn == -1)
             {
-                return (int)Err.PNless;
+                //return (int)Err.PNless;
+                errors[(int)Err.PNless] = true;
             }
             List<HashSet<string>> hashList = new List<HashSet<string>>();
             HashSet<string> hashItem = new HashSet<string>();
@@ -281,22 +284,24 @@ namespace Randrew
                     }
                     else
                     {
-                        Console.Write(csv.CurrentRecordIndex + ": " + csv[pn]);
-                        Console.WriteLine();
+                        //Console.Write(csv.CurrentRecordIndex + ": " + csv[pn]);
+                        //Console.WriteLine();
                         csv.CopyCurrentRecordTo(temp);
                         setOutput(temp);
-                        return (int)Err.Duplicates;
+                        //return (int)Err.Duplicates;
+                        errors[(int)Err.Duplicates] = true;
                     }
                     csv.CopyCurrentRecordTo(temp);
                     // Check for '#' in the row
                     if (string.Join(",",temp).Contains('#'))
                     {
-                        Console.Write(csv.CurrentRecordIndex + ": " + csv[pn]);
-                        Console.WriteLine();
-                        return (int)Err.Errors;
+                        //Console.Write(csv.CurrentRecordIndex + ": " + csv[pn]);
+                        //Console.WriteLine();
+                        //return (int)Err.Errors;
+                        errors[(int)Err.Errors] = true;
                     }
 
-                    // !Currently is not able to check for unique value. Need to be fix.
+                    // !Need to cut down on processing time.
                     for (int x = 0; x < csv.FieldCount; x++)
                     {
                         if (families.Contains(headers[x]))
@@ -315,8 +320,9 @@ namespace Randrew
                             }
                             if (!nVal)
                             {
-                                Console.Write("New value for " + headers[x] + " for " + csv.CurrentRecordIndex + ": " + csv[pn]);
-                                return (int)Err.NewValues;
+                                //Console.Write("New value for " + headers[x] + " for " + csv.CurrentRecordIndex + ": " + csv[pn]);
+                                //return (int)Err.NewValues;
+                                errors[(int)Err.NewValues] = true;
                             }
                         }
                     }
@@ -330,7 +336,8 @@ namespace Randrew
 
             }
 
-            return (int)Err.Good;
+            //return (int)Err.Good;
+            return errors;
         }
 
     }

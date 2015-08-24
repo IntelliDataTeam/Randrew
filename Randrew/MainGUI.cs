@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using LumenWorks.Framework.IO.Csv;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Randrew
 {
@@ -23,7 +24,7 @@ namespace Randrew
             Exit
         }
         private bool oFile = false;
-        //BackgroundWorker Minion;
+        BackgroundWorker Minion;
 
         public MainGUI()
         {
@@ -40,11 +41,11 @@ namespace Randrew
 
         private void MainGUI_Load(object sender, EventArgs e)
         {
-            /*Minion = new BackgroundWorker();
+            Minion = new BackgroundWorker();
             Minion.WorkerReportsProgress = true;
             Minion.WorkerSupportsCancellation = true;
             Minion.DoWork += new DoWorkEventHandler(Minion_DoWork);
-            Minion.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Minion_RunWorkerCompleted);*/
+            Minion.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Minion_RunWorkerCompleted);
             
         }
 
@@ -71,14 +72,51 @@ namespace Randrew
                 case (int)comboIndex.Check:
                     if (oFile)
                     {
-                        /*if (!Minion.IsBusy)
-                        {
-                            Minion.RunWorkerAsync(Secrets.bunnyEmotion());
-                            menuFile.Enabled = false;
-                            statusText.Text = "Working...";
-                        }*/
+                        Stopwatch stopwatch = new Stopwatch();
                         menuFile.Enabled = false;
-                        switch (Program.DataChk())
+
+                        stopwatch.Start();
+
+                        bool[] errors = Program.DataChk();
+
+                        stopwatch.Stop();
+
+                        string err_output = null;
+                        TimeSpan ts = stopwatch.Elapsed;
+                        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                        if (errors[1])
+                        {
+                            err_output += "There are duplicate values.";
+                            err_output += Environment.NewLine;
+                        }
+                        if (errors[2])
+                        {
+                            err_output += "There are error codes from excel.";
+                            err_output += Environment.NewLine;
+                        }
+                        if (errors[3])
+                        {
+                            err_output += "Missing crossing referrences.";
+                            err_output += Environment.NewLine;
+                        }
+                        if (errors[4])
+                        {
+                            err_output += "PN column is missing.";
+                            err_output += Environment.NewLine;
+                        }
+                        if (errors[5])
+                        {
+                            err_output += "There are new values.";
+                            err_output += Environment.NewLine;
+                        }
+                        if (!errors.Contains(true))
+                        {
+                            err_output = "Everything is good.";
+                            err_output += Environment.NewLine;
+                        }
+
+                        statusText.Text = err_output + elapsedTime;
+                        /*switch (Program.DataChk())
                         {
                             case 0:
                                 statusText.Text = "All is good.";
@@ -97,7 +135,7 @@ namespace Randrew
                             case 5:
                                 statusText.Text = "There are new values.";
                                 break;
-                        }
+                        }*/
                         menuFile.Enabled = true;
                     }
                     else
@@ -109,6 +147,12 @@ namespace Randrew
                     setDGV(Program.getReq());
                     bool submit = false;
                     submit = Program.setCredential(false);
+                    /*if (!Minion.IsBusy)
+                    {
+                        Minion.RunWorkerAsync(Secrets.bunnyEmotion(12));
+                        menuFile.Enabled = false;
+                        statusText.Text = "Working...";
+                    }*/
                     while (!Program.UpdateSource() && submit)
                     {
                         statusText.Text = "Incorrect Username/Password. Try Again.";
@@ -139,8 +183,9 @@ namespace Randrew
 
         private void Minion_DoWork(object sender, DoWorkEventArgs e)
         {
-            BackgroundWorker minion = sender as BackgroundWorker;
-            Thread.Sleep(1000);
+            //BackgroundWorker minion = sender as BackgroundWorker;
+            //minion.ReportProgress(1);
+            Minion.ReportProgress(1);
         }
 
         private void Minion_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -155,12 +200,13 @@ namespace Randrew
             }
             else
             {
-                statusText.Text = "success!";
+                //Resuming();
+                Waiting();
             }
         }
 
         private void Minion_ProgressChanged(object sender, ProgressChangedEventArgs e) {
-
+            Waiting();
         }
 
         private void statusText_TextChanged(object sender, EventArgs e)
