@@ -21,10 +21,12 @@ Replacing Humans, one at a time.
 ---Alternative is to have an animation that indicate the process is currently running.<br/>
 ---Need to get backgroundworker to actively redefining 'Bunny' text field. <br/>
 -Properly check username and password before running queries <br/>
+-Implement threading to update GUI while processes are running <br/>
 
 <h2>Current Problems</h2>
 -Username and Password data are unencrypted <br/>
 -Input form are susceptible to sql injection attack <br/>
+-Threading is not working/implemented <br/>
 
 <h2>Purpose</h2>
 The purpose of this program is to assist in the build checking process. The end goal of this project is to use this 
