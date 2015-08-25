@@ -6,6 +6,7 @@ Replacing Humans, one at a time.
 -Able to update config files from the dev <br/>
 -Able to read distinct values from csv files and compare them <br/>
 -Reduced processing time for distinct check <br/>
+-Able to highlight the error in datagridview <br/>
 
 <h3>08/17/2015</h3>
 -Capable of reading and parsing config file for family columns.<br/>
@@ -17,7 +18,6 @@ Replacing Humans, one at a time.
 -Improved performance of checks <br/>
 
 <h2>Current Goals</h2>
--Output relevant data to datagridview <br/>
 -More error messages & notes <br/>
 -Create column rule accessibility <br/>
 -Encrypt Password <br/>
