@@ -2,6 +2,11 @@
 Replacing Humans, one at a time.
 
 <h2>Updates</h2>
+<h3>08/25/2015</h3>
+-Able to update config files from the dev <br/>
+-Able to read distinct values from csv files and compare them <br/>
+-Reduced processing time for distinct check <br/>
+
 <h3>08/17/2015</h3>
 -Capable of reading and parsing config file for family columns.<br/>
 -Able to show data from config file in datagridview.<br/>
