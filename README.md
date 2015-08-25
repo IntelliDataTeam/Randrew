@@ -13,14 +13,13 @@ Replacing Humans, one at a time.
 
 <h2>Current Goals</h2>
 -Output relevant data to datagridview <br/>
--Read from a "rule" file. <br/>
----Distinct column file <br/>
+-More error messages & notes <br/>
+-Create column rule accessibility <br/>
 -Encrypt Password <br/>
 -Progress Bar <br/>
 ---Might not be possible since we can't get the line count without greatly affecting performance.<br/>
 ---Alternative is to have an animation that indicate the process is currently running.<br/>
 ---Need to get backgroundworker to actively redefining 'Bunny' text field. <br/>
--Properly check username and password before running queries <br/>
 -Implement threading to update GUI while processes are running <br/>
 
 <h2>Current Problems</h2>
