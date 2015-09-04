@@ -18,6 +18,9 @@ Replacing Humans, one at a time.
 -Improved performance of checks <br/>
 
 <h2>Current Goals</h2>
+-Add the ability to upload the data right from the program <br/>
+---Potentially dangerous as it could run a incorrect query <br/>
+---Solution could be to let the user customize and see the query <br/>
 -More error messages & notes <br/>
 -Create column rule accessibility <br/>
 -Encrypt Password <br/>
