@@ -24,28 +24,33 @@ namespace Randrew
             Exit
         }
         private bool oFile = false;
-        BackgroundWorker Minion;
+        
 
         public MainGUI()
         {
             InitializeComponent();
             Bunny.Text = Secrets.bunnyEmotion();
+
+            
         }
-        
+
         private void setDGV(DataTable output)
         {
             dataOutput.AutoGenerateColumns = true;
             dataOutput.DataSource = output;
-
+            List<string> errCoor = Program.GetErrCoor();
+            int r = 0;
+            int c = 0;
+            foreach (string err in errCoor)
+            {
+                r = Int32.Parse(err.Substring(0,err.IndexOf(',')));
+                c = Int32.Parse(err.Substring(err.IndexOf(',')+1));
+                dataOutput.Rows[r].Cells[c].Style.BackColor = Color.Tomato;
+            }
         }
 
         private void MainGUI_Load(object sender, EventArgs e)
         {
-            Minion = new BackgroundWorker();
-            Minion.WorkerReportsProgress = true;
-            Minion.WorkerSupportsCancellation = true;
-            Minion.DoWork += new DoWorkEventHandler(Minion_DoWork);
-            Minion.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Minion_RunWorkerCompleted);
             
         }
 
@@ -84,6 +89,11 @@ namespace Randrew
                         string err_output = null;
                         TimeSpan ts = stopwatch.Elapsed;
                         string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                        if (errors[0])
+                        {
+                            err_output += "There is no ProdCat column.";
+                            err_output += Environment.NewLine;
+                        }
                         if (errors[1])
                         {
                             err_output += "There are duplicate values.";
@@ -96,7 +106,7 @@ namespace Randrew
                         }
                         if (errors[3])
                         {
-                            err_output += "Missing crossing referrences.";
+                            err_output += "Missing an important column.";
                             err_output += Environment.NewLine;
                         }
                         if (errors[4])
@@ -109,33 +119,23 @@ namespace Randrew
                             err_output += "There are new values.";
                             err_output += Environment.NewLine;
                         }
+                        if (errors[6])
+                        {
+                            err_output += "There are too many errors!";
+                            err_output += Environment.NewLine;
+                        }
+                        if (errors[7])
+                        {
+                            err_output += "Failed customized rules.";
+                            err_output += Environment.NewLine;
+                        }
                         if (!errors.Contains(true))
                         {
                             err_output = "Everything is good.";
                             err_output += Environment.NewLine;
                         }
-
+                        setDGV(Program.GetErr());
                         statusText.Text = err_output + elapsedTime;
-                        /*switch (Program.DataChk())
-                        {
-                            case 0:
-                                statusText.Text = "All is good.";
-                                break;
-                            case 1:
-                                statusText.Text = "There are duplicates.";
-                                setDGV(Program.getOutput());
-                                break;
-                            case 2:
-                                statusText.Text = "There are error values.";
-                                setDGV(Program.getOutput());
-                                break;
-                            case 4:
-                                statusText.Text = "There is no PN Column.";
-                                break;
-                            case 5:
-                                statusText.Text = "There are new values.";
-                                break;
-                        }*/
                         menuFile.Enabled = true;
                     }
                     else
@@ -147,12 +147,6 @@ namespace Randrew
                     setDGV(Program.getReq());
                     bool submit = false;
                     submit = Program.setCredential(false);
-                    /*if (!Minion.IsBusy)
-                    {
-                        Minion.RunWorkerAsync(Secrets.bunnyEmotion(12));
-                        menuFile.Enabled = false;
-                        statusText.Text = "Working...";
-                    }*/
                     while (!Program.UpdateSource() && submit)
                     {
                         statusText.Text = "Incorrect Username/Password. Try Again.";
@@ -181,38 +175,11 @@ namespace Randrew
             Bunny.Text = Secrets.bunnyEmotion();
         }
 
-        private void Minion_DoWork(object sender, DoWorkEventArgs e)
-        {
-            //BackgroundWorker minion = sender as BackgroundWorker;
-            //minion.ReportProgress(1);
-            Minion.ReportProgress(1);
-        }
-
-        private void Minion_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Cancelled == true)
-            {
-                statusText.Text = "Process was cancelled.";
-            }
-            else if (!(e.Error == null))
-            {
-                statusText.Text = "Error: " + e.Error.Message;
-            }
-            else
-            {
-                //Resuming();
-                Waiting();
-            }
-        }
-
-        private void Minion_ProgressChanged(object sender, ProgressChangedEventArgs e) {
-            Waiting();
-        }
-
         private void statusText_TextChanged(object sender, EventArgs e)
         {
 
         }
 
     }
+
 }
