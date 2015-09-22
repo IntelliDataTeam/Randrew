@@ -2,6 +2,11 @@
 Replacing Humans, one at a time.
 
 <h2>Updates</h2>
+<h3>09/22/2015</h3>
+-Implemented customizable conditions for each column <br/>
+-Moved operations into MainGui from Program for later threading <br/>
+-Trimmed some fat <br/>
+
 <h3>08/25/2015</h3>
 -Able to update config files from the dev <br/>
 -Able to read distinct values from csv files and compare them <br/>
@@ -18,6 +23,7 @@ Replacing Humans, one at a time.
 -Improved performance of checks <br/>
 
 <h2>Current Goals</h2>
+-Able to edit more than one file consecutively (currently will break if load another file) <br/>
 -Add the ability to upload the data right from the program <br/>
 ---Potentially dangerous as it could run a incorrect query <br/>
 ---Solution could be to let the user customize and see the query <br/>
@@ -31,6 +37,7 @@ Replacing Humans, one at a time.
 -Implement threading to update GUI while processes are running <br/>
 
 <h2>Current Problems</h2>
+<b>Can only edit one file at a time, need to exit out of the program to edit another one </b> <br/>
 <b>-Large builds are causing 'outofmemory' errors </b> <br/>
 ---Unique list run out of memory in trying to store the data for all of the PNs <br/>
 <b>-Unique Data Checking is costing too much performance</b> <br/>
