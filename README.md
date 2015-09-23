@@ -23,6 +23,7 @@ Replacing Humans, one at a time.
 -Improved performance of checks <br/>
 
 <h2>Current Goals</h2>
+-<b>Cut down on the distinct values file size (maybe use a new data structure?)</b> <br/>
 -Able to edit more than one file consecutively (currently will break if load another file) <br/>
 -Add the ability to upload the data right from the program <br/>
 ---Potentially dangerous as it could run a incorrect query <br/>
