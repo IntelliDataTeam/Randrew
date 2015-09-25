@@ -66,24 +66,24 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Randrew.exe" size="29128">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Randrew.exe" size="29640">
       <assemblyIdentity name="Randrew" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>mUbW1HHDpmq9eQ8fh1jv+cEMK+vQxj95LAo3U7Jcrnw=</dsig:DigestValue>
+        <dsig:DigestValue>bZqiJR2fnLMlaf+AOt+Lv7wbs7+jt1FRPyp00jLM2SY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Randrew.exe.config" size="187">
+  <file name="Randrew.exe.config" size="1128">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>xm4bo26HQ0LNVwz1vdPYtzhkpMnp2AI5i+f0b+OahTI=</dsig:DigestValue>
+      <dsig:DigestValue>zXyllcbJ2QZIAvi/2+mHoSeWKtRBPZtd1Wk42XwWExQ=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

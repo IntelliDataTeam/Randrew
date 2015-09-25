@@ -43,6 +43,8 @@
             "Import CSV",
             "Check CSV",
             "Update Source",
+            "Set New Config",
+            "Reset Settings",
             "Exit"});
             this.menuFile.Location = new System.Drawing.Point(12, 12);
             this.menuFile.Name = "menuFile";
@@ -52,6 +54,8 @@
             // 
             // statusText
             // 
+            this.statusText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.statusText.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.statusText.Cursor = System.Windows.Forms.Cursors.No;
             this.statusText.Enabled = false;
@@ -70,6 +74,9 @@
             this.dataOutput.AllowUserToAddRows = false;
             this.dataOutput.AllowUserToDeleteRows = false;
             this.dataOutput.AllowUserToOrderColumns = true;
+            this.dataOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataOutput.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.dataOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataOutput.Location = new System.Drawing.Point(12, 110);

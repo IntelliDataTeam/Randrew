@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Randrew.exe.manifest" size="4823">
+    <dependentAssembly dependencyType="install" codebase="Randrew.exe.manifest" size="4824">
       <assemblyIdentity name="Randrew.exe" version="1.0.0.4" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>29xppVSLfTaushfIo2JiEu56Hk0ADNf3HWhM9EBsJB4=</dsig:DigestValue>
+        <dsig:DigestValue>LxSUp6OCF5YPbN2N29iTQ1QR2OYpEUZRpbbZJqf7an0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

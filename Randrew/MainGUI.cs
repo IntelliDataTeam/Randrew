@@ -12,13 +12,14 @@ using System.Threading;
 using System.Diagnostics;
 using System.IO;
 using MySql.Data.MySqlClient;
-using System.Diagnostics;
+using System.Configuration;
 
 namespace Randrew
 {
     public partial class MainGUI : Form
     {
         /** <Global Variables> **/
+        #region Global_Variables
         enum Err
         {
             ProdCatLess,
@@ -35,6 +36,8 @@ namespace Randrew
             Import,
             Check,
             Update,
+            Customed,
+            Reset,
             Exit
         }
         private CsvReader csv;
@@ -53,6 +56,7 @@ namespace Randrew
         private bool inProgress;
         private int w_bunny = 0;
         private BackgroundWorker minion = new BackgroundWorker();
+        #endregion
         /** </Global Variables> **/
         
         public MainGUI()
@@ -174,7 +178,7 @@ namespace Randrew
             {
                 case (int)comboIndex.Import:
                     string filename;
-                    switch (filename = getFile())
+                    switch (filename = getFile("csv"))
                     {
                         case "Cancelled":
                             break;
@@ -219,6 +223,20 @@ namespace Randrew
                         statusText.Text = "Successfully connected to the database and Updated the Source Files.";
                     else
                         statusText.Text = "Update Source Files Cancelled.";
+                    break;
+
+                case (int)comboIndex.Customed:
+                    string fn = getFile("config");
+                    if (fn != "Cancelled" || fn != null)
+                    {
+                        Properties.Settings.Default.distincts = fn;
+                        Properties.Settings.Default.Save();
+                        parsedFile();
+                    }
+                    break;
+
+                case (int)comboIndex.Reset:
+                    Properties.Settings.Default.Reset();
                     break;
 
                 case (int)comboIndex.Exit:
@@ -316,7 +334,8 @@ namespace Randrew
             d_families = new List<string>();
             req = new DataTable();
             ruleList = new List<List<string>>();
-            string filename = "\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randru\\Configs\\columns.txt";
+            //string filename = "\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randru\\Configs\\columns.txt";
+            string filename = Properties.Settings.Default.distincts;
             List<string[]> rList = new List<string[]>();
             int rLen = 0;
             Console.WriteLine(filename);
@@ -374,6 +393,9 @@ namespace Randrew
             catch (Exception e)
             {
                 MessageBox.Show("Error: " + e.Message, "Error", MessageBoxButtons.OK);
+                //Properties.Settings.Default.distincts = ConfigurationManager.AppSettings["default_config"];
+                //Properties.Settings.Default.Save();
+                Properties.Settings.Default.Reset();
                 Environment.Exit(0);
             }
         }
@@ -392,12 +414,21 @@ namespace Randrew
             return false;
         }
 
-        private string getFile()
+        private string getFile(string option)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Title = "Select CSV File";
-            ofd.InitialDirectory = "c:\\Documents";
-            ofd.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            if (option == "csv")
+            {
+                ofd.Title = "Select CSV File";
+                ofd.InitialDirectory = "c:\\Documents";
+                ofd.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            }
+            else
+            {
+                ofd.Title = "Select The Config File";
+                ofd.InitialDirectory = "c:\\Documents";
+                ofd.Filter = "TXT files (*.txt)|*.txt|All files (*.*)|*.*";
+            }
             ofd.FilterIndex = 1;
             ofd.RestoreDirectory = true;
 
