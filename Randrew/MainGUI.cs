@@ -613,7 +613,7 @@ namespace Randrew
                         errors[(int)Err.Duplicates] = true;
                         add = true;
                         errCoor.Add(r + "," + (pn + 1));
-                        log.Add("There are duplicates PN in row " + csv.CurrentRecordIndex + ".");
+                        log.Add("There are duplicates PN in row " + (csv.CurrentRecordIndex+1) + ".");
                     }
 
 
@@ -633,7 +633,7 @@ namespace Randrew
                         errors[(int)Err.Errors] = true;
                         add = true;
                         errCoor.Add(r + "," + (x + 1));
-                        log.Add("There is an excel error code in row " + csv.CurrentRecordIndex + " and column '" + headers[x] + "'.");
+                        log.Add("There is an excel error code in row " + (csv.CurrentRecordIndex+1) + " and column '" + headers[x] + "'.");
                     }
                 }
 
@@ -651,7 +651,7 @@ namespace Randrew
                                 errors[(int)Err.NewValues] = true;
                                 add = true;
                                 errCoor.Add(r + "," + (x + 1));
-                                log.Add("There is a new value in row " + csv.CurrentRecordIndex + " and column '" + headers[x] + "'.");
+                                log.Add("There is a new value in row " + (csv.CurrentRecordIndex+1) + " and column '" + headers[x] + "'.");
                             }
                             break;
                         }
@@ -687,7 +687,7 @@ namespace Randrew
                             {
                                 errors[(int)Err.Customized] = true;
                                 errCoor.Add(r + "," + (h + 1));
-                                log.Add("There is violator of custom rule in row " + csv.CurrentRecordIndex + " and column '" + headers[h] + "'.");
+                                log.Add("There is violator of custom rule in row " + (csv.CurrentRecordIndex+1) + " and column '" + headers[h] + "'.");
                                 add = true;
                             }
                         }
@@ -697,7 +697,7 @@ namespace Randrew
                 if (add)
                 {
                     csv.CopyCurrentRecordTo(arr);
-                    fArr[0] = (csv.CurrentRecordIndex + 2).ToString();
+                    fArr[0] = (csv.CurrentRecordIndex + 1).ToString();
                     for (int j = 0; j < arr.Length; j++)
                     {
                         fArr[j + 1] = arr[j];
