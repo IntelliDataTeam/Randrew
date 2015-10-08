@@ -38,9 +38,6 @@ Replacing Humans, one at a time.
 -Implement threading to update GUI while processes are running <br/>
 
 <h2>Current Problems</h2>
-<b>Can only edit one file at a time, need to exit out of the program to edit another one </b> <br/>
-<b>-Large builds are causing 'outofmemory' errors </b> <br/>
----Unique list run out of memory in trying to store the data for all of the PNs <br/>
 <b>-Unique Data Checking is costing too much performance</b> <br/>
 ---Need to optimize the code (right now is 10x slower with it) <br/>
 -Username and Password data are unencrypted <br/>
