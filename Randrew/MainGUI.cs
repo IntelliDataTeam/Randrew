@@ -517,6 +517,7 @@ namespace Randrew
         private bool UpdateSource()
         {
             string cs = @"server=10.176.3.13;userid=" + username + ";password=" + password + ";database=dev";
+            string device = "capacitors";
             MySqlConnection conn = null;
             MySqlDataReader reader = null;
             MySqlCommand cmd = null;
@@ -532,7 +533,7 @@ namespace Randrew
                     object[] oString = new object[disCol.Length];
                     string qString = string.Join(",", disCol);
 
-                    string stm = "SELECT DISTINCT " + qString + " FROM capacitors WHERE prodcat='" + d_families[x] + "';";
+                    string stm = "SELECT DISTINCT " + qString + " FROM " + device + " WHERE prodcat='" + d_families[x] + "';";
                     Console.WriteLine(stm);
                     cmd = new MySqlCommand(stm, conn);
                     cmd.CommandTimeout = 0;
