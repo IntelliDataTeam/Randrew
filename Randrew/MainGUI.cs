@@ -74,7 +74,9 @@ namespace Randrew
         void minion_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Error != null)
+            {
                 statusText.Text = e.Error.Message;
+            }
             else if (e.Cancelled)
                 statusText.Text = "Cancelled.";
             else
@@ -501,7 +503,16 @@ namespace Randrew
                 while ((line = sr.ReadLine()) != null)
                 {
                     // Read in the entire line and split it up by ','.
-                    string[] arr = line.Split(',');
+                    //string[] arr = line.Split(',');
+                    string[] arr;
+                    if (line.Contains("\",\"")) {
+                        arr = line.Trim('"').Split(new String[] { "\",\"" }, StringSplitOptions.None);
+                    }
+                    else
+                    {
+                        arr = line.Split(',');
+                    }
+                    
                     for (int x = 0; x < row.Length; x++)
                     {
                         if (!uniques[x].Contains(arr[x]))
@@ -531,14 +542,17 @@ namespace Randrew
                 {
                     string[] disCol = d_columns[x];
                     object[] oString = new object[disCol.Length];
+                    //string[] oString = new string[disCol.Length];
                     string qString = string.Join(",", disCol);
 
                     string stm = "SELECT DISTINCT " + qString + " FROM " + device + " WHERE prodcat='" + d_families[x] + "';";
                     Console.WriteLine(stm);
-                    cmd = new MySqlCommand(stm, conn);
-                    cmd.CommandTimeout = 0;
-
-                    reader = cmd.ExecuteReader();
+                    using (cmd = new MySqlCommand(stm, conn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        reader = cmd.ExecuteReader();
+                    }
+                    
 
                     // Need to change how the output data are going to be structure to reduce processing time.
                     // Could write to temp files that each hold a column and then combined together to create the final file.
@@ -548,6 +562,14 @@ namespace Randrew
                         while (reader.Read())
                         {
                             reader.GetValues(oString);
+                            for (int n = 0; n < oString.Length; n++)
+                            {
+                                if (oString[n].GetType() == typeof(DBNull))
+                                {
+                                    oString[n] = "NULL";
+                                }
+                                oString[n] = String.Concat("\"", oString[n], "\"");
+                            }
                             w.WriteLine(string.Join(",", oString));
                         }
                         w.Close();
@@ -625,7 +647,15 @@ namespace Randrew
                 if (csv.CurrentRecordIndex == 0)
                 {
                     famRules = d_families.IndexOf(csv[prodcat].ToUpper());
-                    rules = ruleList[famRules];
+                    // Got to find out how to send custom error messages.
+                    try
+                    {
+                        rules = ruleList[famRules];
+                    }
+                    catch (ArgumentOutOfRangeException e)
+                    {
+                        throw new ArgumentOutOfRangeException("ERROR: " + csv[prodcat].ToUpper() + " does not have distinct file.");
+                    }
                     uniques = LoadData(csv[prodcat].ToUpper());
                     for (int x = 0; x < rules.Count(); x++)
                         Console.WriteLine(rules[x]);
@@ -679,6 +709,10 @@ namespace Randrew
 
                             if (!uniques[y].Contains(csv[x]))
                             {
+                                if (csv[x] == "" && uniques[y].Contains("NULL"))
+                                {
+                                    break;
+                                }
                                 //Console.WriteLine(uniques[y].First() + ": " + csv[x]);
                                 errors[(int)Err.NewValues] = true;
                                 add = true;
