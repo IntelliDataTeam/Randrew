@@ -2,6 +2,13 @@
 Replacing Humans, one at a time.
 
 <h2>Updates</h2>
+<h3>10/19/2015</h3>
+<ui>
+<li>Put double quotes around all field values.</li>
+<li>Replace DBNULL with NULL</li>
+<li>Field values with comma(s) in them will now work properly</li>
+</ui>
+
 <h3>09/22/2015</h3>
 -Implemented customizable conditions for each column <br/>
 -Moved operations into MainGui from Program for later threading <br/>
