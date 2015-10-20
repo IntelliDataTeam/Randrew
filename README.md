@@ -40,8 +40,8 @@ Replacing Humans, one at a time.
 </ui>
 <li>Create column rule accessibility</li>
 <li>Encrypt user's info</li>
-<li>Progress Bar</li>
-<li>Might not be possible since we can't get the line count without greatly affecting performance</li>
+<ul>Progress Bar
+<li>Might not be possible since we can't get the line count without greatly affecting performance</li></ul>
 </ul>
 
 <h2>Current Problems</h2>
