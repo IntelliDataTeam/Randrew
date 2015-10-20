@@ -35,9 +35,8 @@ Replacing Humans, one at a time.
 <ul>Add the ability to upload the data right from the program
 <li>Potentially dangerous as it could run a incorrect query </li>
 <li>Solution could be to let the user customize and see the query </li></ul>
-<ui>More error messages & notes
+<li>More error messages & notes
 <li>Figure out how to throw customized error messages so that users can understand</li>
-</ui>
 <li>Create column rule accessibility</li>
 <li>Encrypt user's info</li>
 <ul>Progress Bar
