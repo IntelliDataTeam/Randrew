@@ -30,19 +30,19 @@ Replacing Humans, one at a time.
 -Improved performance of checks <br/>
 
 <h2>Current Goals</h2>
-<ui>
+<ul>
 <li><b>Cut down on the distinct values file size (maybe use a new data structure?)</b></li>
-<ui>Add the ability to upload the data right from the program
+<ul>Add the ability to upload the data right from the program
 <li>Potentially dangerous as it could run a incorrect query </li>
-<li>Solution could be to let the user customize and see the query </li></ui>
--More error messages & notes <br/>
--Create column rule accessibility <br/>
--Encrypt Password <br/>
--Progress Bar <br/>
----Might not be possible since we can't get the line count without greatly affecting performance.<br/>
----Alternative is to have an animation that indicate the process is currently running.<br/>
--Implement threading to update GUI while processes are running <br/>
+<li>Solution could be to let the user customize and see the query </li></ul>
+<ui>More error messages & notes
+<li>Figure out how to throw customized error messages so that users can understand</li>
 </ui>
+<li>Create column rule accessibility</li>
+<li>Encrypt user's info</li>
+<li>Progress Bar</li>
+<li>Might not be possible since we can't get the line count without greatly affecting performance</li>
+</ul>
 
 <h2>Current Problems</h2>
 <b>-Unique Data Checking is costing too much performance</b> <br/>
