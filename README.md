@@ -1,4 +1,4 @@
-# Randrew 1.0
+# Randrew 1.1
 Replacing Humans, one at a time.
 
 <h2>Updates</h2>
@@ -30,19 +30,19 @@ Replacing Humans, one at a time.
 -Improved performance of checks <br/>
 
 <h2>Current Goals</h2>
--<b>Cut down on the distinct values file size (maybe use a new data structure?)</b> <br/>
--Able to edit more than one file consecutively (currently will break if load another file) <br/>
--Add the ability to upload the data right from the program <br/>
----Potentially dangerous as it could run a incorrect query <br/>
----Solution could be to let the user customize and see the query <br/>
+<ui>
+<li><b>Cut down on the distinct values file size (maybe use a new data structure?)</b></li>
+<ui>Add the ability to upload the data right from the program
+<li>Potentially dangerous as it could run a incorrect query </li>
+<li>Solution could be to let the user customize and see the query </li></ui>
 -More error messages & notes <br/>
 -Create column rule accessibility <br/>
 -Encrypt Password <br/>
 -Progress Bar <br/>
 ---Might not be possible since we can't get the line count without greatly affecting performance.<br/>
 ---Alternative is to have an animation that indicate the process is currently running.<br/>
----Need to get backgroundworker to actively redefining 'Bunny' text field. <br/>
 -Implement threading to update GUI while processes are running <br/>
+</ui>
 
 <h2>Current Problems</h2>
 <b>-Unique Data Checking is costing too much performance</b> <br/>
