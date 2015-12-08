@@ -151,8 +151,15 @@ namespace Randrew
             else
             {
                 inProgress = true;
-                Waiting();
-                statusText.Text = "Current Progress: " + e.ProgressPercentage + " lines";
+                /*if (e.ProgressPercentage < 0)
+                {
+                    statusText.Text = "Updating " + d_columns[(-1 * e.ProgressPercentage) - 1];
+                }
+                else
+                {*/
+                    Waiting();
+                    statusText.Text = "Current Progress: " + e.ProgressPercentage + " lines";
+                //}
                 inProgress = false;
             }
         }
@@ -170,6 +177,13 @@ namespace Randrew
         private void MainGUI_Load(object sender, EventArgs e)
         {
             parsedFile();
+            int x = 0;
+            foreach (string fam in d_families)
+            {
+                UpdateList.Items.Add(fam);
+                UpdateList.SetItemChecked(x, true);
+                x++;
+            }
             minion.WorkerReportsProgress = true;
             minion.WorkerSupportsCancellation = true;
         }
@@ -234,6 +248,11 @@ namespace Randrew
                         Properties.Settings.Default.distincts = fn;
                         Properties.Settings.Default.Save();
                         parsedFile();
+                        UpdateList.Items.Clear();
+                        foreach (string fam in d_families)
+                        {
+                            UpdateList.Items.Add(fam);
+                        }
                     }
                     break;
 
@@ -325,8 +344,13 @@ namespace Randrew
             headers = csv.GetFieldHeaders();
 
             errTable.Columns.Add("Row Number");
+            CheckList.Items.Clear();
             for (int x = 0; x < headers.Length; x++)
+            {
                 errTable.Columns.Add(headers[x]);
+                CheckList.Items.Add(headers[x]);
+                CheckList.SetItemChecked(x, true);
+            }
         }
 
         /* Is currently working, but still need to cut down on overheads. */
@@ -493,6 +517,7 @@ namespace Randrew
                 string[] row = d_columns[i];
                 for (int x = 0; x < row.Length; x++)
                 {
+                    //Console.Write(row[x] + ",");
                     List<string> temp = new List<string>();
                     temp.Add(row[x]);
                     uniques.Add(temp);
@@ -500,19 +525,22 @@ namespace Randrew
                 string line;
 
                 // Read from Unique Value File (familyname.csv)
+                line = sr.ReadLine();   // Skip column headers since we already have those.
                 while ((line = sr.ReadLine()) != null)
                 {
                     // Read in the entire line and split it up by ','.
-                    //string[] arr = line.Split(',');
                     string[] arr;
-                    if (line.Contains("\",\"")) {
+                    /*if (line.Contains("\",\"")) {
                         arr = line.Trim('"').Split(new String[] { "\",\"" }, StringSplitOptions.None);
                     }
                     else
                     {
                         arr = line.Split(',');
-                    }
-                    
+                    }*/
+
+                    // Wrapped all of the output in double quotes already.
+                    arr = line.Trim('"').Split(new String[] { "\",\"" }, StringSplitOptions.None);
+
                     for (int x = 0; x < row.Length; x++)
                     {
                         if (!uniques[x].Contains(arr[x]))
@@ -537,15 +565,20 @@ namespace Randrew
             {
                 conn = new MySqlConnection(cs);
                 conn.Open();
-
-                for (int x = 0; x < d_families.Count(); x++)
+                //for (int x = 0; x < d_families.Count(); x++)
+                foreach (int indexChecked in UpdateList.CheckedIndices)
                 {
-                    string[] disCol = d_columns[x];
+                    //string[] disCol = d_columns[x];
+                    string[] disCol = d_columns[indexChecked];
                     object[] oString = new object[disCol.Length];
-                    //string[] oString = new string[disCol.Length];
                     string qString = string.Join(",", disCol);
 
-                    string stm = "SELECT DISTINCT " + qString + " FROM " + device + " WHERE prodcat='" + d_families[x] + "';";
+                    Console.WriteLine(UpdateList.Items[indexChecked].ToString());
+
+                    //minion.ReportProgress(-1 * (indexChecked + 1));
+                  
+                    //string stm = "SELECT DISTINCT " + qString + " FROM " + device + " WHERE prodcat='" + d_families[x] + "';";
+                    string stm = "SELECT DISTINCT " + qString + " FROM " + device + " WHERE prodcat='" + UpdateList.Items[indexChecked].ToString() + "';";
                     Console.WriteLine(stm);
                     using (cmd = new MySqlCommand(stm, conn))
                     {
@@ -556,7 +589,8 @@ namespace Randrew
 
                     // Need to change how the output data are going to be structure to reduce processing time.
                     // Could write to temp files that each hold a column and then combined together to create the final file.
-                    using (StreamWriter w = new StreamWriter(@"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\" + d_families[x] + ".csv", false))
+                    //using (StreamWriter w = new StreamWriter(@"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\" + d_families[x] + ".csv", false))
+                    using (StreamWriter w = new StreamWriter(@"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\" + UpdateList.Items[indexChecked].ToString() + ".csv", false))
                     {
                         w.WriteLine(string.Join(",", disCol));
                         while (reader.Read())
@@ -568,6 +602,8 @@ namespace Randrew
                                 {
                                     oString[n] = "NULL";
                                 }
+                                else if (oString[n].ToString() == "")
+                                    oString[n] = "NULL";
                                 oString[n] = String.Concat("\"", oString[n], "\"");
                             }
                             w.WriteLine(string.Join(",", oString));
@@ -576,7 +612,8 @@ namespace Randrew
                     }
 
 
-                    Console.WriteLine("Done with " + d_families[x]);
+                    //Console.WriteLine("Done with " + d_families[x]);
+                    Console.WriteLine("Done with " + UpdateList.Items[indexChecked].ToString());
                     reader.Close();
                 }
             }
@@ -704,7 +741,8 @@ namespace Randrew
                 {
                     for (int y = 0; y < uniques.Count(); y++)
                     {
-                        if (uniques[y].First() == headers[x])
+                        // NEWIDEA: implemented optional skipping of checking certain column.
+                        if (uniques[y].First() == headers[x] && CheckList.GetItemCheckState(CheckList.FindStringExact(headers[x])) == CheckState.Checked)
                         {
 
                             if (!uniques[y].Contains(csv[x]))
@@ -779,6 +817,7 @@ namespace Randrew
             return errCoor;
         }
         #endregion
+
         /************************ </Internal Functions> *************************/
 
         
