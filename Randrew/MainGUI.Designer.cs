@@ -35,10 +35,11 @@
             this.tab_menu = new System.Windows.Forms.TabControl();
             this.tab_main = new System.Windows.Forms.TabPage();
             this.tab_option = new System.Windows.Forms.TabPage();
-            this.UpdateLabel = new System.Windows.Forms.Label();
-            this.UpdateList = new System.Windows.Forms.CheckedListBox();
-            this.CheckingLabel = new System.Windows.Forms.Label();
             this.CheckList = new System.Windows.Forms.CheckedListBox();
+            this.CheckingLabel = new System.Windows.Forms.Label();
+            this.UpdateList = new System.Windows.Forms.CheckedListBox();
+            this.UpdateLabel = new System.Windows.Forms.Label();
+            this.tab_queries = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.dataOutput)).BeginInit();
             this.tab_menu.SuspendLayout();
             this.tab_main.SuspendLayout();
@@ -109,6 +110,7 @@
             // 
             this.tab_menu.Controls.Add(this.tab_main);
             this.tab_menu.Controls.Add(this.tab_option);
+            this.tab_menu.Controls.Add(this.tab_queries);
             this.tab_menu.Location = new System.Drawing.Point(12, 12);
             this.tab_menu.Name = "tab_menu";
             this.tab_menu.SelectedIndex = 0;
@@ -143,22 +145,13 @@
             this.tab_option.Text = "Options";
             this.tab_option.UseVisualStyleBackColor = true;
             // 
-            // UpdateLabel
+            // CheckList
             // 
-            this.UpdateLabel.AutoSize = true;
-            this.UpdateLabel.Location = new System.Drawing.Point(25, 26);
-            this.UpdateLabel.Name = "UpdateLabel";
-            this.UpdateLabel.Size = new System.Drawing.Size(98, 13);
-            this.UpdateLabel.TabIndex = 0;
-            this.UpdateLabel.Text = "Customize Updates";
-            // 
-            // UpdateList
-            // 
-            this.UpdateList.FormattingEnabled = true;
-            this.UpdateList.Location = new System.Drawing.Point(28, 42);
-            this.UpdateList.Name = "UpdateList";
-            this.UpdateList.Size = new System.Drawing.Size(185, 304);
-            this.UpdateList.TabIndex = 1;
+            this.CheckList.FormattingEnabled = true;
+            this.CheckList.Location = new System.Drawing.Point(276, 42);
+            this.CheckList.Name = "CheckList";
+            this.CheckList.Size = new System.Drawing.Size(186, 304);
+            this.CheckList.TabIndex = 3;
             // 
             // CheckingLabel
             // 
@@ -169,13 +162,32 @@
             this.CheckingLabel.TabIndex = 2;
             this.CheckingLabel.Text = "Customize Checking";
             // 
-            // CheckList
+            // UpdateList
             // 
-            this.CheckList.FormattingEnabled = true;
-            this.CheckList.Location = new System.Drawing.Point(276, 42);
-            this.CheckList.Name = "CheckList";
-            this.CheckList.Size = new System.Drawing.Size(186, 304);
-            this.CheckList.TabIndex = 3;
+            this.UpdateList.FormattingEnabled = true;
+            this.UpdateList.Location = new System.Drawing.Point(28, 42);
+            this.UpdateList.Name = "UpdateList";
+            this.UpdateList.Size = new System.Drawing.Size(185, 304);
+            this.UpdateList.TabIndex = 1;
+            // 
+            // UpdateLabel
+            // 
+            this.UpdateLabel.AutoSize = true;
+            this.UpdateLabel.Location = new System.Drawing.Point(25, 26);
+            this.UpdateLabel.Name = "UpdateLabel";
+            this.UpdateLabel.Size = new System.Drawing.Size(98, 13);
+            this.UpdateLabel.TabIndex = 0;
+            this.UpdateLabel.Text = "Customize Updates";
+            // 
+            // tab_queries
+            // 
+            this.tab_queries.Location = new System.Drawing.Point(4, 22);
+            this.tab_queries.Name = "tab_queries";
+            this.tab_queries.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_queries.Size = new System.Drawing.Size(1065, 576);
+            this.tab_queries.TabIndex = 2;
+            this.tab_queries.Text = "Queries";
+            this.tab_queries.UseVisualStyleBackColor = true;
             // 
             // MainGUI
             // 
@@ -209,6 +221,7 @@
         private System.Windows.Forms.CheckedListBox CheckList;
         private System.Windows.Forms.Label CheckingLabel;
         private System.Windows.Forms.CheckedListBox UpdateList;
+        private System.Windows.Forms.TabPage tab_queries;
     }
 }
 

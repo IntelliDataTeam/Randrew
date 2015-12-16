@@ -186,6 +186,8 @@ namespace Randrew
             }
             minion.WorkerReportsProgress = true;
             minion.WorkerSupportsCancellation = true;
+            CheckingLabel.Text = "Please Import First.";
+            CheckList.Hide();
         }
 
         private void menuFile_SelectedIndexChanged(object sender, EventArgs e)
@@ -204,6 +206,8 @@ namespace Randrew
                         default:
                             oFile = openFile(filename);
                             statusText.Text = "File: (" + filename + ") is loaded";
+                            CheckingLabel.Text = "Customize Checking";
+                            CheckList.Show();
                             break;
                     }
                     break;
@@ -360,7 +364,6 @@ namespace Randrew
             d_families = new List<string>();
             req = new DataTable();
             ruleList = new List<List<string>>();
-            //string filename = "\\\\INTELLIDATA-NAS\\IntelliDataNetworkDrive\\z_Quang\\Projects\\Randru\\Configs\\columns.txt";
             string filename = Properties.Settings.Default.distincts;
             List<string[]> rList = new List<string[]>();
             int rLen = 0;
@@ -530,6 +533,7 @@ namespace Randrew
                 {
                     // Read in the entire line and split it up by ','.
                     string[] arr;
+
                     /*if (line.Contains("\",\"")) {
                         arr = line.Trim('"').Split(new String[] { "\",\"" }, StringSplitOptions.None);
                     }
@@ -575,9 +579,6 @@ namespace Randrew
 
                     Console.WriteLine(UpdateList.Items[indexChecked].ToString());
 
-                    //minion.ReportProgress(-1 * (indexChecked + 1));
-                  
-                    //string stm = "SELECT DISTINCT " + qString + " FROM " + device + " WHERE prodcat='" + d_families[x] + "';";
                     string stm = "SELECT DISTINCT " + qString + " FROM " + device + " WHERE prodcat='" + UpdateList.Items[indexChecked].ToString() + "';";
                     Console.WriteLine(stm);
                     using (cmd = new MySqlCommand(stm, conn))
@@ -589,7 +590,6 @@ namespace Randrew
 
                     // Need to change how the output data are going to be structure to reduce processing time.
                     // Could write to temp files that each hold a column and then combined together to create the final file.
-                    //using (StreamWriter w = new StreamWriter(@"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\" + d_families[x] + ".csv", false))
                     using (StreamWriter w = new StreamWriter(@"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\" + UpdateList.Items[indexChecked].ToString() + ".csv", false))
                     {
                         w.WriteLine(string.Join(",", disCol));
@@ -612,7 +612,6 @@ namespace Randrew
                     }
 
 
-                    //Console.WriteLine("Done with " + d_families[x]);
                     Console.WriteLine("Done with " + UpdateList.Items[indexChecked].ToString());
                     reader.Close();
                 }
