@@ -32,6 +32,11 @@ Replacing Humans, one at a time.
 <h2>Current Goals</h2>
 <ul>
 <li><b>Cut down on the distinct values file size (maybe use a new data structure?)</b></li>
+<ul>
+	<li><b>Add more error messages</b></li>
+	<li>Error message that point out if the config file is out of date with the distinct file (Compare the two headers).</li>
+	<li>Check for </li>
+</ul>
 <ul>Add the ability to upload the data right from the program
 <li>Potentially dangerous as it could run a incorrect query </li>
 <li>Solution could be to let the user customize and see the query </li></ul>
