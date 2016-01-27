@@ -35,6 +35,7 @@ namespace Randrew
         {
             Import,
             Check,
+            Scan,
             Update,
             Customed,
             Reset,
@@ -166,7 +167,12 @@ namespace Randrew
 
         void minion_DoWork(object sender, DoWorkEventArgs e)
         {
-            e.Result = DataChk();
+            Console.WriteLine("Hello World: " + e.Argument);
+            if ((int)e.Argument == 1)
+                e.Result = DataChk();
+            else if ((int)e.Argument == 2)
+                e.Result = DataScn();
+            // Future idea: Bring 'Update Source' function into here so that GUI control and data processes will not interfere with each others.
         }
         #endregion
         /********************* </BackgroundWorker Functions> *********************/
@@ -223,6 +229,37 @@ namespace Randrew
 
                         // currently not responsive for ccs due to large config file.
                         minion.RunWorkerAsync(menuFile.SelectedIndex);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please import a file first.", "Error", MessageBoxButtons.OK);
+                    }
+                    break;
+
+                case (int)comboIndex.Scan:
+                    if (oFile)
+                    {
+                        bool sub = false;
+                        sub = setCredential(false);
+                        while (!sub)
+                        {
+                            statusText.Text = "Incorrect Username/Password. Try Again.";
+                            sub = setCredential(true);
+                        }
+                        if (sub)
+                        {
+                            statusText.Text = "Successfully connected to the database.";
+                            menuFile.Enabled = false;
+                            dataOutput.DataSource = null;
+
+                            stopwatch = new Stopwatch();
+                            stopwatch.Start();
+
+                            // currently not responsive for ccs due to large config file.
+                            minion.RunWorkerAsync(menuFile.SelectedIndex);
+                        }
+                        else
+                            statusText.Text = "Connection Cancelled.";
                     }
                     else
                     {
@@ -422,8 +459,6 @@ namespace Randrew
             catch (Exception e)
             {
                 MessageBox.Show("Error: " + e.Message, "Error", MessageBoxButtons.OK);
-                //Properties.Settings.Default.distincts = ConfigurationManager.AppSettings["default_config"];
-                //Properties.Settings.Default.Save();
                 Properties.Settings.Default.Reset();
                 Environment.Exit(0);
             }
@@ -529,29 +564,33 @@ namespace Randrew
 
                 // Read from Unique Value File (familyname.csv)
                 line = sr.ReadLine();   // Skip column headers since we already have those.
-                while ((line = sr.ReadLine()) != null)
+                string[] hTemp;
+                hTemp = line.Split(',');
+
+                // Check to see if the config file and the distinct file are out of sync (out of date).
+                if (row.SequenceEqual(hTemp))
                 {
-                    // Read in the entire line and split it up by ','.
-                    string[] arr;
 
-                    /*if (line.Contains("\",\"")) {
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        // Read in the entire line and split it up by ','.
+                        string[] arr;
+                        // Wrapped all of the output in double quotes already.
                         arr = line.Trim('"').Split(new String[] { "\",\"" }, StringSplitOptions.None);
-                    }
-                    else
-                    {
-                        arr = line.Split(',');
-                    }*/
 
-                    // Wrapped all of the output in double quotes already.
-                    arr = line.Trim('"').Split(new String[] { "\",\"" }, StringSplitOptions.None);
-
-                    for (int x = 0; x < row.Length; x++)
-                    {
-                        if (!uniques[x].Contains(arr[x]))
-                            uniques[x].Add(arr[x]);
+                        for (int x = 0; x < row.Length; x++)
+                        {
+                            if (!uniques[x].Contains(arr[x]))
+                                uniques[x].Add(arr[x]);
+                        }
                     }
+                    sr.Close();
                 }
-                sr.Close();
+                else
+                {
+                    MessageBox.Show("Error: Config and Distinct File are out of date. Please 'Update Source'.", "Error", MessageBoxButtons.OK);
+                    Environment.Exit(0);
+                }
             }
             Console.WriteLine("Finished loading data.");
             return uniques;
@@ -576,6 +615,23 @@ namespace Randrew
                     string[] disCol = d_columns[indexChecked];
                     object[] oString = new object[disCol.Length];
                     string qString = string.Join(",", disCol);
+
+                    // Attempt to allow "smart" querying.
+                    switch (UpdateList.Items[indexChecked].ToString().Substring(0, 1))
+                    {
+                        case "C":
+                            device = "capacitors";
+                            break;
+                        case "I":
+                            device = "inductors";
+                            break;
+                        case "V":
+                            device = "varistors";
+                            break;
+                        default:
+                            device = "capacitors";
+                            break;
+                    }
 
                     Console.WriteLine(UpdateList.Items[indexChecked].ToString());
 
@@ -630,6 +686,73 @@ namespace Randrew
             if (conn != null)
                 conn.Close();
             return true;
+        }
+
+        private List<string> DataScn()
+        {
+            List<string> errCoor = new List<string>();
+            int pn = csv.GetFieldIndex("PN");
+            string[] arr = new string[2];
+            int r = 0;
+            object[] output = new object[2];
+
+            string cs = @"server=10.176.3.13;userid=" + username + ";password=" + password + ";database=dev";
+            MySqlConnection conn = null;
+            MySqlDataReader reader = null;
+            MySqlCommand cmd = null;
+
+            try
+            {
+                conn = new MySqlConnection(cs);
+
+                using (StreamWriter w = new StreamWriter(@"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\output.csv", false))
+                {
+                    while (csv.ReadNextRecord())
+                    {
+                        conn.Open();
+                        //string stm = "SELECT COUNT(*) FROM capacitors WHERE pn='" + csv[0] + "' OR alias1='" + csv[0] + "' OR alias2='" + csv[0] + "' OR alias3='" + csv[0] + "';";
+                        string stm = "SELECT COUNT(*) FROM capacitors WHERE pn='" + csv[0] + "';";
+                        using (cmd = new MySqlCommand(stm, conn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            reader = cmd.ExecuteReader();
+                        }
+                        while (reader.Read()){
+                            reader.GetValues(output);
+                            Console.WriteLine("Output = " + output[0]);
+                        }
+                        if (String.Compare(output[0].ToString(),"0") != 0)
+                        {
+                            output[1] = "TRUE";
+                        }
+                        else
+                        {
+                            output[1] = "FALSE";
+                        }
+                        Console.WriteLine(output[1].ToString());
+
+                        output[0] = csv[0];
+                        w.WriteLine(string.Join(",", output));
+                        
+                        conn.Close();
+                        reader.Close();
+                    }
+                    w.Close();
+                }
+                
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine("Error: {0}", ex.ToString());
+                if (reader != null)
+                    reader.Close();
+                if (conn != null)
+                    conn.Close();
+            }
+
+          
+
+            return errCoor;
         }
 
         // Run checks while reading the csv file once.

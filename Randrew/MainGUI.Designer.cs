@@ -53,6 +53,7 @@
             this.menuFile.Items.AddRange(new object[] {
             "Import CSV",
             "Check CSV",
+            "PN Scan",
             "Update Source",
             "Set New Config",
             "Reset Settings",
