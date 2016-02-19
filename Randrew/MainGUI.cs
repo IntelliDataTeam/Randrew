@@ -56,6 +56,7 @@ namespace Randrew
         private bool oFile = false;
         private bool inProgress;
         private int w_bunny = 0;
+        private string fname;
         private BackgroundWorker minion = new BackgroundWorker();
         #endregion
         /** </Global Variables> **/
@@ -211,6 +212,7 @@ namespace Randrew
                             break;
                         default:
                             oFile = openFile(filename);
+                            fname = filename;
                             statusText.Text = "File: (" + filename + ") is loaded";
                             CheckingLabel.Text = "Customize Checking";
                             CheckList.Show();
@@ -544,7 +546,6 @@ namespace Randrew
         private List<List<string>> LoadData(string family)
         {
             List<List<string>> uniques = new List<List<string>>();
-            Console.WriteLine("Loading Data.");
             // Current plan is for this to only keep in memory only one family at a time and replace it if a new family appeared.
             string filename = @"\\INTELLIDATA-NAS\IntelliDataNetworkDrive\z_Quang\Projects\Randru\Configs\" + family + ".csv";
             // Can do a File.Exists as part of the data checking process (There shouldn't be any new family).
@@ -592,7 +593,6 @@ namespace Randrew
                     Environment.Exit(0);
                 }
             }
-            Console.WriteLine("Finished loading data.");
             return uniques;
         }
 
@@ -627,6 +627,9 @@ namespace Randrew
                             break;
                         case "V":
                             device = "varistors";
+                            break;
+                        case "R":
+                            device = "resistors";
                             break;
                         default:
                             device = "capacitors";
@@ -761,6 +764,7 @@ namespace Randrew
             for (int x = 0; x < errors.Length; x++)
                 errors[x] = false;
             log = new List<string>();
+            
             List<string> errCoor = new List<string>();
             List<List<string>> uniques = new List<List<string>>();
             int pn = csv.GetFieldIndex("PN");
@@ -791,7 +795,8 @@ namespace Randrew
             HashSet<string> hashItem = new HashSet<string>();
             hashList.Add(hashItem);
             /**** Find how to get the max size of the csv file */
-
+            if (csv.CurrentRecordIndex > 0)     // Reset CSVReader csv so that we can use it again.
+                initializeCsv(fname);
             while (csv.ReadNextRecord())
             {
                 if (errTable.Rows.Count > 50000)
